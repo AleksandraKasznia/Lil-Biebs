@@ -182,12 +182,17 @@ class SongWriter:
             song.append({"title": f"Verse {i+1}", "text": verse})
             song.append(chorus)
 
+        song_string=""
+
         for segment in song:
             for line in segment["text"]:
+                song_string += line.capitalize()
+                song_string += "\n"
                 print(line)
             print("\n")
+            song_string += "\n"
 
-        return song
+        return song_string
 
     @classmethod
     def create_bieber_dup(cls, corpus_path, base):
@@ -238,11 +243,17 @@ def rhyme(inp, level):
      return set(rhymes)
 
 
+def generate_song(chorus_lines=4, verses=3):
+    model = SongWriter.load_bieber_dup('bieber4.pkl')
+    song = model.sing_a_song(num_chorus_lines=chorus_lines, num_verse=verses)
+    return song
+
+
 if __name__ == '__main__':
     # init_cmu()
     # little_biebs = SongWriter.create_bieber_dup("corpus.txt", 4)
     # little_biebs.save_bieber_dup(path="./bieber4.pkl")
     model_n2 = SongWriter.load_bieber_dup('bieber4.pkl')
-    song = model_n2.sing_a_song()
+    song = model_n2.sing_a_song(num_chorus_lines=4)
     print(song)
 
